@@ -1,0 +1,6 @@
+# ignore node_modules
+Angular/node_modules/
+# ignore node_modules
+nppBackup/
+# ignore run.bat
+ignore Angular/run.bat

@@ -1,3 +1,8 @@
+
 <p>
   Turn of {{ (_state$ | async).turn == 'PLAYERX' ? "Player 1 - Xs" : "Player 2 - 0s" }}
 </p>
+<p>  
+  {{ _stateService.winner() }} <br>
+</p>
+
