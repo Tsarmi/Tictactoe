@@ -1,0 +1,210 @@
+Notas about Git
+
+
+----------------------
+CLONE
+----------------------
+
+Por ejemplo, si quieres clonar la librería de Git llamada libgit2 puedes hacer 
+algo así:
+
+$ git clone https://github.com/libgit2/libgit2
+
+Si quieres clonar el repositorio a un directorio con otro nombre que no sea 
+libgit2, puedes especificarlo con la siguiente opción de línea de comandos:
+
+$ git clone https://github.com/libgit2/libgit2 mylibgit
+
+
+------------------
+STATUS
+------------------
+
+La herramienta principal para determinar qué archivos están en qué estado es 
+el comando 
+
+$ git status
+
+
+------------------
+ADD
+------------------
+
+Para comenzar a rastrear el archivo README, puedes ejecutar lo siguiente:
+
+$ git add README
+
+
+------------------
+.gitignore
+------------------
+
+Las reglas sobre los patrones que puedes incluir en el archivo .gitignore son 
+las siguientes:
+
+    Ignorar las líneas en blanco y aquellas que comiencen con #.
+
+    Aceptar patrones glob estándar.
+
+    Los patrones pueden terminar en barra (/) para especificar un directorio.
+
+    Los patrones pueden negarse si se añade al principio el signo de 
+    exclamación (!).
+
+Los patrones glob son una especie de expresión regular simplificada usada por 
+los terminales. 
+    Un asterisco (*) corresponde a cero o más caracteres; 
+    
+    [abc] corresponde a cualquier carácter dentro de los corchetes (en este 
+    caso a, b o c); 
+    
+    el signo de interrogación (?) corresponde a un carácter cualquier; 
+    
+    y los corchetes sobre caracteres separados por un guión ([0-9]) 
+    corresponde a cualquier carácter entre ellos (en este caso del 0 al 9). 
+    
+    También puedes usar dos asteriscos para indicar directorios anidados; 
+    a/**/z coincide con a/z, a/b/z, a/b/c/z, etc.
+    
+    
+------------------
+COMMIT
+------------------    
+   
+La forma más sencilla de confirmar es escribiendo 
+
+$git commit
+
+Otra alternativa es escribir el mensaje de confirmación directamente en el 
+comando commit utilizando la opción -m:
+
+$ git commit -m "Story 182: Fix benchmarks for speed"
+
+Añadiendo la opción -a al comando git commit harás que Git prepare 
+automáticamente todos los archivos rastreados antes de confirmarlos, 
+ahorrándote el paso de git add
+
+$ git commit -a -m 'added new benchmarks'
+
+
+------------------
+ELIMINAR ARCHIVOS
+------------------
+
+Para ello existe el comando git rm, que además elimina el archivo de tu 
+directorio de trabajo de manera que no aparezca la próxima vez como un 
+archivo no rastreado. git rm ademas borra el archivo de tu disco local
+
+$ git rm PROJECTS.md
+
+
+
+Otra cosa que puedas querer hacer es mantener el archivo en tu directorio 
+de trabajo pero eliminarlo del área de preparación. En otras palabras, 
+quisieras mantener el archivo en tu disco duro pero sin que Git lo siga 
+rastreando. Esto puede ser particularmente útil si olvidaste añadir algo 
+en tu archivo .gitignore y lo preparaste accidentalmente, algo como un gran 
+archivo de trazas a un montón de archivos compilados .a. Para hacerlo, 
+utiliza la opción --cached:
+
+$ git rm --cached README
+
+Al comando git rm puedes pasarle archivos, directorios y patrones glob. Lo 
+que significa que puedes hacer cosas como
+
+$ git rm log/\*.log
+
+Fíjate en la barra invertida (\) antes del asterisco *. Esto es necesario 
+porque Git hace su propia expansión de nombres de archivo, aparte de la 
+expansión hecha por tu terminal. Este comando elimina todos los archivo que 
+tengan la extensión .log dentro del directorio log/. O también puedes hacer 
+algo como:
+
+$ git rm \*~
+
+Este comando elimina todos los archivos que acaben con ~.
+
+
+------------------
+DESHACER CAMBIOS
+------------------
+
+Uno de las acciones más comunes a deshacer es cuando confirmas un cambio 
+antes de tiempo y olvidas agregar algún archivo, o te equivocas en el 
+mensaje de confirmación. Si quieres rehacer la confirmación, puedes 
+reconfirmar con la opción --amend:
+
+$ git commit --amend
+
+¿Qué tal si te das cuenta que no quieres mantener los cambios del archivo 
+CONTRIBUTING.md? 
+
+$ git checkout -- CONTRIBUTING.md
+
+
+------------------
+remotos
+------------------
+
+Para ver los remotos que tienes configurados, debes ejecutar el comando git 
+remote. Mostrará los nombres de cada uno de los remotos que tienes 
+especificados. Si has clonado tu repositorio, deberías ver al menos origin 
+este es el nombre que por defecto Git le da al servidor del que has clonado:
+
+$ git remote
+
+También puedes pasar la opción -v, la cual muestra las URLs que Git ha 
+asociado al nombre y que serán usadas al leer y escribir en ese remoto:
+
+$ get remote -v 
+
+Para añadir un remoto nuevo y asociarlo a un nombre que puedas referenciar 
+fácilmente, ejecuta git remote add [nombre] [url]:
+
+$ git remote add pb https://github.com/paulboone/ticgit
+$ git remote -v
+
+pb	https://github.com/paulboone/ticgit (fetch)
+pb	https://github.com/paulboone/ticgit (push)
+
+
+-------------------
+Traer de tus remotos
+--------------------
+
+A partir de ahora puedes usar el nombre pb en la línea de comandos en lugar 
+de la URL entera. Por ejemplo, si quieres traer toda la información que 
+tiene Paul pero tú aun no tienes en tu repositorio, 
+
+$ git fetch pb
+
+----------------------
+Enviar a Tus Remotos
+----------------------
+Cuando tienes un proyecto que quieres compartir, debes enviarlo a un 
+servidor. El comando para hacerlo es simple: 
+git push [nombre-remoto] [nombre-rama]. 
+Si quieres enviar tu rama master a tu servidor origin (recuerda, clonar 
+un repositorio establece esos nombres automáticamente), entonces puedes 
+ejecutar el siguiente comando y se enviarán todos los commits que hayas 
+hecho al servidor:
+
+$ git push origin master
+
+-----------------------
+Inspeccionar un Remoto
+-----------------------
+
+Si quieres ver más información acerca de un remoto en particular, puedes 
+ejecutar el comando git remote show [nombre-remoto]. Si ejecutas el comando 
+con un nombre en particular, como origin
+
+$ git remote show origin
+
+Este comando te indica a cuál rama enviarás información automáticamente 
+cada vez que ejecutas git push,
+
+
+
+
+

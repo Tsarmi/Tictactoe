@@ -1,6 +1,16 @@
 # ignore node_modules
 Angular/node_modules/
-# ignore node_modules
-nppBackup/
 # ignore run.bat
 ignore Angular/run.bat
+# # ignore all nppBackup/ directories
+nppBackup/
+Angular/nppBackup/
+Angular/src/nppBackup/
+Angular/src/app/nppBackup/
+Angular/src/app/game/nppBackup/
+Angular/src/app/game/board/nppBackup/
+Angular/src/app/game/footer/nppBackup/
+Angular/src/app/game/game/nppBackup/
+Angular/src/app/game/header/nppBackup/
+Angular/src/app/game/reset/nppBackup/
+Angular/src/app/game/square/nppBackup/

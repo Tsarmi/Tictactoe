@@ -51,7 +51,7 @@ module.exports = "<app-header></app-header>\r\n<app-board></app-board>\r\n<app-f
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<p>\r\n  Turn of {{ (_state$ | async).turn == 'PLAYERX' ? \"Player 1 - Xs\" : \"Player 2 - 0s\" }}\r\n  _state$ = {{ (_state$ | async) }}\r\n</p>\r\n\r\n"
+module.exports = "\r\n<p>\r\n  Turn of {{ (_state$ | async).turn == 'PLAYERX' ? \"Player 1 - Xs\" : \"Player 2 - 0s\" }}\r\n</p>\r\n<p>  \r\n  <!-- {{ _stateService.winner() }} <br> -->\r\n  Turn of {{ (_state$ | async).hasWin ? \"WINNER! : \"Not Winer at the moment\" }}\r\n  \r\n</p>\r\n\r\n"
 
 /***/ }),
 
@@ -445,10 +445,9 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var HeaderComponent = /** @class */ (function () {
-    // private _stateService: StateService;
     function HeaderComponent(stateService) {
         this._state$ = stateService.state$;
-        // this._stateService = stateService;
+        this._stateService = stateService;
     }
     HeaderComponent.prototype.ngOnInit = function () {
     };
@@ -571,6 +570,7 @@ var SquareComponent = /** @class */ (function () {
     SquareComponent.prototype._handleSquareClick = function () {
         console.log('Click on square', this.row, this.column);
         this._stateService.updateValue(this.row, this.column);
+        this._stateService.winner();
     };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
@@ -627,7 +627,8 @@ var StateService = /** @class */ (function () {
                 ['-', '-', '-'],
                 ['-', '-', '-']
             ],
-            movcounter: 0
+            movcounter: 0,
+            hasWin: false
         };
         this._state$ = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](initialState);
     }
@@ -666,13 +667,15 @@ var StateService = /** @class */ (function () {
                 ['-', '-', '-'],
                 ['-', '-', '-']
             ],
-            movcounter: 0
+            movcounter: 0,
+            hasWin: false
         };
     };
     StateService.prototype.winner = function () {
         var win = false;
         var turn = this.state.turn === 'PLAYERX' ? 'X' : '0';
         var board = this.state.values;
+        var msg = "No winner at the moment";
         // at least must be 5 movements to declare a winner
         if (this.state.movcounter >= 5) {
             // rows
@@ -688,7 +691,11 @@ var StateService = /** @class */ (function () {
             win = win || (board[0][2] === turn && board[1][1] === turn && board[2][0] === turn);
         }
         console.log("Winner?", win);
-        return win;
+        this.state.hasWin = win;
+        if (win) {
+            msg = "..and the winner is PLAYER " + turn;
+        }
+        return msg;
     };
     StateService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({

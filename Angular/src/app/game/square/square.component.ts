@@ -24,6 +24,7 @@ export class SquareComponent implements OnInit {
   _handleSquareClick() {
   	console.log('Click on square', this.row, this.column);
     this._stateService.updateValue(this.row, this.column);
+    this._stateService.winner();
   }
 
 }
